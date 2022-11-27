@@ -3,8 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:preppa/widgets/startup_names.dart';
-import 'package:http/http.dart';
+import 'package:preppa/widgets/recipe_list.dart';
 
 
 void main() {
@@ -39,18 +38,26 @@ class _PreppaAppState extends State<PreppaApp> {
               label: 'My week',
             ),
             NavigationDestination(
-              icon: Icon(Icons.search),
-              label: 'Cupboard search',
+              icon: Icon(Icons.shopping_cart),
+              label: 'List',
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.bookmark),
+              icon: Icon(Icons.search),
+              label: 'Cupboard',
+            ),
+            NavigationDestination(
               icon: Icon(Icons.person),
               label: 'Settings',
             )
           ],
         ),
         body: <Widget> [
-        RandomWords(),
+        const RecipeList(),
+        Container(
+          color: Colors.red,
+          alignment: Alignment.center,
+          child: const Text('Shopping list'),
+        ),
         Container(
           color: Colors.green,
           alignment: Alignment.center,
