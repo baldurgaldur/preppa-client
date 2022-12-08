@@ -1,19 +1,13 @@
-class Album {
-  final int userId;
-  final int id;
-  final String title;
+class Recipe {
+  final String description;
 
-  const Album({
-    required this.userId,
-    required this.id,
-    required this.title,
+  const Recipe({
+    required this.description
   });
 
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
+  factory Recipe.fromJson(Map<String, dynamic> json) {
+    return Recipe(
+      description: json['description'],
     );
   }
 }

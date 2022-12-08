@@ -11,44 +11,50 @@ class RecipeList extends StatefulWidget {
   State<RecipeList> createState() => _RecipeListState();
 }
 
-Future<Album> fetchAlbum(int albumId) async {
+Future<List<Recipe>> fetchRecipes() async {
   final response = await http
-      .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/$albumId'));
+      .get(Uri.parse('https://preppa-server.fly.dev/recipes'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    return Album.fromJson(jsonDecode(response.body));
+    Iterable l = json.decode(response.body);
+    List<Recipe> recipes = List<Recipe>.from(l.map((model)=> Recipe.fromJson(model)));
+
+    return recipes;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load recipes');
   }
 }
 
 class _RecipeListState extends State<RecipeList> {
-  final _suggestions = <Album>[];
   final _biggerFont = const TextStyle(fontSize: 18);
-  late Future<Album> futureAlbum;
+  late Future<List<Recipe>> futureRecipes;
 
   @override
   void initState() {
     super.initState();
-    futureAlbum = fetchAlbum(1);
+    futureRecipes = fetchRecipes();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Album>(
-        future: futureAlbum,
+    return FutureBuilder<List<Recipe>>(
+        future: futureRecipes,
         builder: (context, snapshot) {
-          if(snapshot.hasData) {
-            return Text(snapshot.data!.title);
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-          // By default return a loading indicator
+        if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              return Text(snapshot.data?[index].description ?? "null");
+            },);
+        }
+        else {
+          // While we wait
           return const CircularProgressIndicator();
+        }
         });
   }
 }
