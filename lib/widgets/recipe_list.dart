@@ -47,8 +47,32 @@ class _RecipeListState extends State<RecipeList> {
         if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
           return ListView.builder(
             itemCount: snapshot.data!.length,
+            scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return Text(snapshot.data?[index].description ?? "null");
+              return ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget> [
+                Container(
+                  width: 160.0,
+                  color: Colors.red,
+                ),
+                Container(
+                  width: 160.0,
+                  color: Colors.blue,
+                ),
+                Container(
+                  width: 160.0,
+                  color: Colors.green,
+                ),
+                Container(
+                  width: 160.0,
+                  color: Colors.yellow,
+                ),
+                Container(
+                  width: 160.0,
+                  color: Colors.orange,
+                )]
+              );
             },);
         }
         else {
