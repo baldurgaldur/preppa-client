@@ -29,14 +29,115 @@ Future<List<Recipe>> fetchRecipes() async {
   }
 }
 
+class _RecipeDescription extends StatelessWidget {
+  const _RecipeDescription({
+    required this.description,
+    required this.cookingTimeMin,
+    required this.cuisine,
+  });
+
+  final String description;
+  final String cuisine;
+  final int cookingTimeMin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            description,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 14.0,
+            ),
+          ),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
+          Text(
+            cuisine,
+            style: const TextStyle(fontSize: 10.0),
+          ),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 1.0)),
+          Text(
+            '$cookingTimeMin minutes',
+            style: const TextStyle(fontSize: 10.0),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomListItem extends StatelessWidget {
+  const CustomListItem({
+    super.key,
+    required this.thumbnail,
+    required this.description,
+    required this.cuisine,
+    required this.cookingTimeMin,
+  });
+
+  final Widget thumbnail;
+  final String description;
+  final String cuisine;
+  final int cookingTimeMin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: thumbnail,
+          ),
+          Expanded(
+            flex: 3,
+            child: _RecipeDescription(
+              description: description,
+              cuisine: cuisine,
+              cookingTimeMin: cookingTimeMin,
+            ),
+          ),
+          const Icon(
+            Icons.more_vert,
+            size: 16.0,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _RecipeListState extends State<RecipeList> {
-  final _biggerFont = const TextStyle(fontSize: 18);
   late Future<List<Recipe>> futureRecipes;
+  String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
 
   @override
   void initState() {
     super.initState();
     futureRecipes = fetchRecipes();
+  }
+
+  List<Widget> mapToWidget(List<Recipe> recipes) {
+    List<Widget> resp = [];
+    for (var i =0; i< recipes.length;i++) {
+      Recipe recipe = recipes[i];
+      Image recImage = Image(
+        image: NetworkImage(baseThumbnailUrl + recipe.name + '.jpg')
+      );
+      resp.add(CustomListItem(
+        description: recipe.description,
+        thumbnail: recImage,
+        cookingTimeMin: recipe.cookingTimeMin,
+        cuisine: recipe.cuisine,
+      ));
+    }
+    return resp;
   }
 
   @override
@@ -47,32 +148,7 @@ class _RecipeListState extends State<RecipeList> {
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
               return ListView(
                 scrollDirection: Axis.horizontal,
-                children: <Widget> [
-                Container(
-                  width: 180.0,
-                  height: 160,
-                  color: Colors.red,
-                ),
-                Container(
-                  width: 160.0,
-                  height: 160,
-                  color: Colors.blue,
-                ),
-                Container(
-                  width: 180.0,
-                  height: 160,
-                  color: Colors.green,
-                ),
-                Container(
-                  width: 180.0,
-                  height: 160,
-                  color: Colors.yellow,
-                ),
-                Container(
-                  width: 180.0,
-                  height: 160,
-                  color: Colors.orange,
-                )]
+                children: mapToWidget(snapshot.data ?? [])
               );
             }
           else {
