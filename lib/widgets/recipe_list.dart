@@ -127,12 +127,14 @@ class _RecipeListState extends State<RecipeList> {
     List<Widget> resp = [];
     for (var i =0; i< recipes.length;i++) {
       Recipe recipe = recipes[i];
-      Image recImage = Image(
-        image: NetworkImage(baseThumbnailUrl + recipe.name + '.jpg')
-      );
+      //Image recImage = Image(
+      //  image: NetworkImage('$baseThumbnailUrl${recipe.name}.jpg')
+      //);
       resp.add(CustomListItem(
         description: recipe.description,
-        thumbnail: recImage,
+        thumbnail: Container(
+          decoration: const BoxDecoration(color: Colors.yellow),
+        ),
         cookingTimeMin: recipe.cookingTimeMin,
         cuisine: recipe.cuisine,
       ));
