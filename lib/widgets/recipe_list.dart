@@ -44,11 +44,7 @@ class _RecipeListState extends State<RecipeList> {
     return FutureBuilder<List<Recipe>>(
         future: futureRecipes,
         builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
               return ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget> [
@@ -73,9 +69,8 @@ class _RecipeListState extends State<RecipeList> {
                   color: Colors.orange,
                 )]
               );
-            },);
-        }
-        else {
+            }
+          else {
           // While we wait
           return const CircularProgressIndicator();
         }
