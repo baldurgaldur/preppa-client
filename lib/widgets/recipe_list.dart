@@ -127,6 +127,9 @@ class _RecipeListState extends State<RecipeList> {
     List<Widget> resp = [];
     for (var i =0; i< recipes.length;i++) {
       Recipe recipe = recipes[i];
+      print("Loading recipe");
+      print(recipe.description);
+      print(recipe.name);
       //Image recImage = Image(
       //  image: NetworkImage('$baseThumbnailUrl${recipe.name}.jpg')
       //);
