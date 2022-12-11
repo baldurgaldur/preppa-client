@@ -127,17 +127,12 @@ class _RecipeListState extends State<RecipeList> {
     List<Widget> resp = [];
     for (var i =0; i< recipes.length;i++) {
       Recipe recipe = recipes[i];
-      print("Loading recipe");
-      print(recipe.description);
-      print(recipe.name);
-      //Image recImage = Image(
-      //  image: NetworkImage('$baseThumbnailUrl${recipe.name}.jpg')
-      //);
+      const Image recImage = Image(
+        image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg')//'$baseThumbnailUrl${recipe.name}.jpg')
+      );
       resp.add(CustomListItem(
         description: recipe.description,
-        thumbnail: Container(
-          decoration: const BoxDecoration(color: Colors.yellow),
-        ),
+        thumbnail: recImage,
         cookingTimeMin: recipe.cookingTimeMin,
         cuisine: recipe.cuisine,
       ));
