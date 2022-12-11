@@ -152,7 +152,8 @@ class _RecipeListState extends State<RecipeList> {
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
               return ListView(
-                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.all(8.0),
+                itemExtent: 106.0,
                 children: mapToWidget(snapshot.data ?? [])
               );
             }
