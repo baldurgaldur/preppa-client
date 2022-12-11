@@ -128,7 +128,7 @@ class _RecipeListState extends State<RecipeList> {
     for (var i =0; i< recipes.length;i++) {
       Recipe recipe = recipes[i];
       const Image recImage = Image(
-        image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg')//'$baseThumbnailUrl${recipe.name}.jpg')
+        image: NetworkImage('https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/boiled_haddoc.jpg')//'$baseThumbnailUrl${recipe.name}.jpg')
       );
       resp.add(CustomListItem(
         description: recipe.description,
