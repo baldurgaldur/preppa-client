@@ -115,7 +115,7 @@ class CustomListItem extends StatelessWidget {
 
 class _RecipeListState extends State<RecipeList> {
   late Future<List<Recipe>> futureRecipes;
-  String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
+  final String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
 
   @override
   void initState() {
@@ -127,8 +127,11 @@ class _RecipeListState extends State<RecipeList> {
     List<Widget> resp = [];
     for (var i =0; i< recipes.length;i++) {
       Recipe recipe = recipes[i];
-      const Image recImage = Image(
-        image: NetworkImage('https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/boiled_haddoc.jpg')//'$baseThumbnailUrl${recipe.name}.jpg')
+      final String recipeName = recipe.name ?? "";
+      final String imgUrl = "$baseThumbnailUrl$recipeName.jpg";
+      print(imgUrl);
+      Image recImage = Image(
+        image: NetworkImage(imgUrl)
       );
       resp.add(CustomListItem(
         description: recipe.description,
