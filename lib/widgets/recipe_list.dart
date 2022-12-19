@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:preppa/types/recipe.dart';
 
-class RecipeList extends StatefulWidget {
-  const RecipeList({super.key});
+class ThinWeek extends StatefulWidget {
+  const ThinWeek({super.key});
 
   @override
-  State<RecipeList> createState() => _RecipeListState();
+  State<ThinWeek> createState() => _ThinWeekState();
 }
 
 Future<List<Recipe>> fetchRecipes() async {
@@ -113,7 +113,7 @@ class CustomListItem extends StatelessWidget {
   }
 }
 
-class _RecipeListState extends State<RecipeList> {
+class _ThinWeekState extends State<ThinWeek> {
   late Future<List<Recipe>> futureRecipes;
   final String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
 
@@ -129,7 +129,7 @@ class _RecipeListState extends State<RecipeList> {
       Recipe recipe = recipes[i];
       final String recipeName = recipe.name ?? "";
       final String imgUrl = "$baseThumbnailUrl$recipeName.jpg";
-      print(imgUrl);
+
       Image recImage = Image(
         image: NetworkImage(imgUrl)
       );
@@ -159,6 +159,72 @@ class _RecipeListState extends State<RecipeList> {
           // While we wait
           return const CircularProgressIndicator();
         }
+        });
+  }
+}
+
+//Wide version of the week widget
+class WideWeek extends StatefulWidget {
+  const WideWeek({super.key});
+
+  @override
+  State<WideWeek> createState() => _WideWeekState();
+}
+
+class _WideWeekState extends State<WideWeek> {
+  late Future<List<Recipe>> futureRecipes;
+  final String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
+
+  @override
+  void initState() {
+    super.initState();
+    futureRecipes = fetchRecipes();
+  }
+
+  List<Widget> mapToWidget(List<Recipe> recipes) {
+    List<Widget> resp = [];
+    for (var i =0; i< recipes.length;i++) {
+      Recipe recipe = recipes[i];
+      final String recipeName = recipe.name ?? "";
+      final String imgUrl = "$baseThumbnailUrl$recipeName.jpg";
+
+      Image recImage = Image(
+          image: NetworkImage(imgUrl)
+      );
+      resp.add(CustomListItem(
+        description: recipe.description,
+        thumbnail: recImage,
+        cookingTimeMin: recipe.cookingTimeMin,
+        cuisine: recipe.cuisine,
+      ));
+    }
+    return resp;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Recipe>>(
+        future: futureRecipes,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+            return Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: ListView(
+                            padding: const EdgeInsets.all(8.0),
+                            itemExtent: 106.0,
+                            children: mapToWidget(snapshot.data ?? []))),
+                  const Expanded(
+                    flex: 3,
+                    child: Placeholder()
+                  )
+            ]);
+          }
+          else {
+            // While we wait
+            return const CircularProgressIndicator();
+          }
         });
   }
 }

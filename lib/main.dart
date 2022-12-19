@@ -51,24 +51,29 @@ class _PreppaAppState extends State<PreppaApp> {
             )
           ],
         ),
-        body: <Widget> [
-        const RecipeList(),
-        Container(
-          color: Colors.red,
-          alignment: Alignment.center,
-          child: const Text('Shopping list'),
-        ),
-        Container(
-          color: Colors.green,
-          alignment: Alignment.center,
-          child: const Text('Page 2'),
-        ),
-        Container(
-          color: Colors.blue,
-          alignment: Alignment.center,
-          child: const Text('Page 3'),
-        )
-      ][currentPageIndex]
+          body: <Widget> [
+            LayoutBuilder(builder: (context, constraints) {
+              if (constraints.maxWidth < 600) {
+                return const ThinWeek();
+              } else {
+                return const WideWeek();
+              }
+            }),
+            Container(
+              color: Colors.red,
+              alignment: Alignment.center,
+              child: const Text('Shopping list'),
+            ),
+            Container(
+              color: Colors.green,
+              alignment: Alignment.center,
+              child: const Text('Page 2'),
+            ),
+            Container(
+              color: Colors.blue,
+              alignment: Alignment.center,
+              child: const Text('Page 3'),
+            )][currentPageIndex]
     )
     );
   }
