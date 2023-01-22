@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:preppa/widgets/recipe_list.dart';
+import 'package:preppa/widgets/my_week.dart';
 
 
 void main() {
@@ -52,13 +52,7 @@ class _PreppaAppState extends State<PreppaApp> {
           ],
         ),
           body: <Widget> [
-            LayoutBuilder(builder: (context, constraints) {
-              if (constraints.maxWidth < 600) {
-                return const ThinWeek();
-              } else {
-                return const WideWeek();
-              }
-            }),
+            const MyWeekWidget(),
             Container(
               color: Colors.red,
               alignment: Alignment.center,

@@ -1,31 +1,39 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:preppa/types/recipe.dart';
 
-class ThinWeek extends StatefulWidget {
-  const ThinWeek({super.key});
+class RecipeListWidget extends StatelessWidget {
+
+  final List<Recipe> recipeList;
+
+  const RecipeListWidget({
+    super.key, required this.recipeList,
+  });
+
+  final String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
 
   @override
-  State<ThinWeek> createState() => _ThinWeekState();
-}
+  Widget build(BuildContext context) {
+    List<Widget> recipeWidgetList = [];
+    for (var i =0; i< recipeList.length;i++) {
+      Recipe recipe = recipeList[i];
+      final String recipeName = recipe.name ?? "";
+      final String imgUrl = "$baseThumbnailUrl$recipeName.jpg";
 
-Future<List<Recipe>> fetchRecipes() async {
-  final response = await http
-      .get(Uri.parse('https://preppa-server.fly.dev/recipes'));
+      Image recImage = Image(
+          image: NetworkImage(imgUrl)
+      );
+      recipeWidgetList.add(CustomListItem(
+        description: recipe.description,
+        thumbnail: recImage,
+        cookingTimeMin: recipe.cookingTimeMin,
+        cuisine: recipe.cuisine,
+      ));
+    }
 
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    Iterable l = json.decode(response.body);
-    List<Recipe> recipes = List<Recipe>.from(l.map((model)=> Recipe.fromJson(model)));
-
-    return recipes;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load recipes');
+    return ListView(
+        padding: const EdgeInsets.all(8.0),
+        itemExtent: 106.0,
+        children: recipeWidgetList);
   }
 }
 
@@ -110,121 +118,5 @@ class CustomListItem extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class _ThinWeekState extends State<ThinWeek> {
-  late Future<List<Recipe>> futureRecipes;
-  final String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
-
-  @override
-  void initState() {
-    super.initState();
-    futureRecipes = fetchRecipes();
-  }
-
-  List<Widget> mapToWidget(List<Recipe> recipes) {
-    List<Widget> resp = [];
-    for (var i =0; i< recipes.length;i++) {
-      Recipe recipe = recipes[i];
-      final String recipeName = recipe.name ?? "";
-      final String imgUrl = "$baseThumbnailUrl$recipeName.jpg";
-
-      Image recImage = Image(
-        image: NetworkImage(imgUrl)
-      );
-      resp.add(CustomListItem(
-        description: recipe.description,
-        thumbnail: recImage,
-        cookingTimeMin: recipe.cookingTimeMin,
-        cuisine: recipe.cuisine,
-      ));
-    }
-    return resp;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Recipe>>(
-        future: futureRecipes,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-              return ListView(
-                padding: const EdgeInsets.all(8.0),
-                itemExtent: 106.0,
-                children: mapToWidget(snapshot.data ?? [])
-              );
-            }
-          else {
-          // While we wait
-          return const CircularProgressIndicator();
-        }
-        });
-  }
-}
-
-//Wide version of the week widget
-class WideWeek extends StatefulWidget {
-  const WideWeek({super.key});
-
-  @override
-  State<WideWeek> createState() => _WideWeekState();
-}
-
-class _WideWeekState extends State<WideWeek> {
-  late Future<List<Recipe>> futureRecipes;
-  final String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
-
-  @override
-  void initState() {
-    super.initState();
-    futureRecipes = fetchRecipes();
-  }
-
-  List<Widget> mapToWidget(List<Recipe> recipes) {
-    List<Widget> resp = [];
-    for (var i =0; i< recipes.length;i++) {
-      Recipe recipe = recipes[i];
-      final String recipeName = recipe.name ?? "";
-      final String imgUrl = "$baseThumbnailUrl$recipeName.jpg";
-
-      Image recImage = Image(
-          image: NetworkImage(imgUrl)
-      );
-      resp.add(CustomListItem(
-        description: recipe.description,
-        thumbnail: recImage,
-        cookingTimeMin: recipe.cookingTimeMin,
-        cuisine: recipe.cuisine,
-      ));
-    }
-    return resp;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Recipe>>(
-        future: futureRecipes,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-            return Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ListView(
-                            padding: const EdgeInsets.all(8.0),
-                            itemExtent: 106.0,
-                            children: mapToWidget(snapshot.data ?? []))),
-                  const Expanded(
-                    flex: 3,
-                    child: Placeholder()
-                  )
-            ]);
-          }
-          else {
-            // While we wait
-            return const CircularProgressIndicator();
-          }
-        });
   }
 }
