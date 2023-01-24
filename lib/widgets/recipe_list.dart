@@ -4,36 +4,38 @@ import 'package:preppa/types/recipe.dart';
 class RecipeListWidget extends StatelessWidget {
 
   final List<Recipe> recipeList;
-
+  final Function recipeClick;
   const RecipeListWidget({
-    super.key, required this.recipeList,
+    super.key, required this.recipeList, required this.recipeClick
   });
 
   final String baseThumbnailUrl = "https://raw.githubusercontent.com/baldurgaldur/preppa-server/main/static/images/";
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> recipeWidgetList = [];
-    for (var i =0; i< recipeList.length;i++) {
-      Recipe recipe = recipeList[i];
-      final String recipeName = recipe.name ?? "";
-      final String imgUrl = "$baseThumbnailUrl$recipeName.jpg";
+    return ListView.builder(
+      padding: const EdgeInsets.all(8.0),
+      itemExtent: 106.0,
+      itemCount: recipeList.length,
+      itemBuilder: (context, index) {
+        Recipe recipe = recipeList[index];
+        final String recipeName = recipe.name ?? "";
+        final String imgUrl = "$baseThumbnailUrl$recipeName.jpg";
 
-      Image recImage = Image(
-          image: NetworkImage(imgUrl)
-      );
-      recipeWidgetList.add(CustomListItem(
-        description: recipe.description,
-        thumbnail: recImage,
-        cookingTimeMin: recipe.cookingTimeMin,
-        cuisine: recipe.cuisine,
-      ));
-    }
-
-    return ListView(
-        padding: const EdgeInsets.all(8.0),
-        itemExtent: 106.0,
-        children: recipeWidgetList);
+        Image recImage = Image(
+            image: NetworkImage(imgUrl)
+        );
+        return InkWell(
+            onTap: recipeClick(),
+            child:  CustomListItem(
+              description: recipe.description,
+              thumbnail: recImage,
+              cookingTimeMin: recipe.cookingTimeMin,
+              cuisine: recipe.cuisine,
+            ),
+        );
+      },
+    );
   }
 }
 

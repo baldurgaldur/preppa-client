@@ -3,6 +3,7 @@ import 'package:preppa/types/recipe.dart';
 
 import 'package:preppa/network/recipe_api.dart';
 import 'package:preppa/widgets/recipe_list.dart';
+import 'package:preppa/widgets/recipe_list_wide.dart';
 
 class MyWeekWidget extends StatefulWidget {
   const MyWeekWidget({super.key});
@@ -32,21 +33,11 @@ class _MyWeekWidgetState extends State<MyWeekWidget> {
             return LayoutBuilder(builder: (context, constraints) {
               if(constraints.maxWidth < 600) {
                 // Thin screen can only show list. Clicking on a recipe will push the whole recipe onto the screen
-                return RecipeListWidget(recipeList: recipeList);
+                //TODO: Navigation on the recipeClick
+                return RecipeListWidget(recipeList: recipeList, recipeClick: () {print("Recipe clicked");},);
               } else {
                 // Wide screen can show both list and recipe to the right. Clicking on a recipe will show the recipe on the right
-                return Row(
-                    children: [
-                      Expanded(
-                          flex: 2,
-                          child: RecipeListWidget(recipeList: recipeList)),
-                      const Expanded(
-                          flex: 3,
-                          //TODO: Add widget for the recipe-details here.
-                          //TODO: It should support adding all ingredients to shopping list
-                          child: Placeholder()
-                      )
-                    ]);
+                return WideRecipeListWidget(recipeList: recipeList);
               }
             });
           } else {
