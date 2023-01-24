@@ -4,7 +4,7 @@ import 'package:preppa/types/recipe.dart';
 class RecipeListWidget extends StatelessWidget {
 
   final List<Recipe> recipeList;
-  final Function recipeClick;
+  final Function(int) recipeClick;
   const RecipeListWidget({
     super.key, required this.recipeList, required this.recipeClick
   });
@@ -26,9 +26,12 @@ class RecipeListWidget extends StatelessWidget {
             image: NetworkImage(imgUrl)
         );
         return InkWell(
-            onTap: recipeClick(),
-            child:  CustomListItem(
-              description: recipe.description,
+          onTap: () {
+              recipeClick(index);
+              },
+          child:  CustomListItem(
+              description:
+              recipe.description,
               thumbnail: recImage,
               cookingTimeMin: recipe.cookingTimeMin,
               cuisine: recipe.cuisine,

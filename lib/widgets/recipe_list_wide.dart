@@ -24,8 +24,12 @@ class _WideRecipeListWidgetState extends State<WideRecipeListWidget> {
         children: [
           Expanded(
               flex: 2,
-              child: RecipeListWidget(recipeList: widget.recipeList, recipeClick: () {
-                  chosenRecipe=1;
+              child: RecipeListWidget(recipeList: widget.recipeList, recipeClick: (recipeIndex) {
+                print('Recipe index is $recipeIndex');
+                setState(() {
+                  chosenRecipe=recipeIndex;
+                });
+                  chosenRecipe=recipeIndex;
                 })),
           Expanded(
               flex: 3,

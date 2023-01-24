@@ -34,7 +34,7 @@ class _MyWeekWidgetState extends State<MyWeekWidget> {
               if(constraints.maxWidth < 600) {
                 // Thin screen can only show list. Clicking on a recipe will push the whole recipe onto the screen
                 //TODO: Navigation on the recipeClick
-                return RecipeListWidget(recipeList: recipeList, recipeClick: () {print("Recipe clicked");},);
+                return RecipeListWidget(recipeList: recipeList, recipeClick: (recipeIndex) {print("Recipe clicked");},);
               } else {
                 // Wide screen can show both list and recipe to the right. Clicking on a recipe will show the recipe on the right
                 return WideRecipeListWidget(recipeList: recipeList);
