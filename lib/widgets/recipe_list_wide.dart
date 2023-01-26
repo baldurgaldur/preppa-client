@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:preppa/types/recipe.dart';
+import 'package:preppa/widgets/recipe_details.dart';
 import 'package:preppa/widgets/recipe_list.dart';
 
 class WideRecipeListWidget extends StatefulWidget {
@@ -25,15 +26,13 @@ class _WideRecipeListWidgetState extends State<WideRecipeListWidget> {
           Expanded(
               flex: 2,
               child: RecipeListWidget(recipeList: widget.recipeList, recipeClick: (recipeIndex) {
-                print('Recipe index is $recipeIndex');
                 setState(() {
                   chosenRecipe=recipeIndex;
                 });
-                  chosenRecipe=recipeIndex;
                 })),
           Expanded(
               flex: 3,
-              child: Text('Recipe index is $chosenRecipe')
+              child: RecipeDetailsWidget(recipe: widget.recipeList[chosenRecipe])
           )
         ]);
   }
