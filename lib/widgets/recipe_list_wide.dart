@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preppa/types/recipe.dart';
 import 'package:preppa/widgets/recipe_details.dart';
-import 'package:preppa/widgets/recipe_list.dart';
+import 'package:preppa/widgets/recipe_list_narrow.dart';
 
 class WideRecipeListWidget extends StatefulWidget {
   final List<Recipe> recipeList;

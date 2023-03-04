@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:preppa/types/recipe.dart';
 
 import 'package:preppa/network/recipe_api.dart';
-import 'package:preppa/widgets/recipe_list.dart';
+import 'package:preppa/widgets/recipe_list_narrow.dart';
 import 'package:preppa/widgets/recipe_list_wide.dart';
 
 class MyWeekWidget extends StatefulWidget {

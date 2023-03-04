@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:preppa/types/recipe.dart';
+import 'package:preppa/widgets/recipe_details_route.dart';
 
 class RecipeListWidget extends StatelessWidget {
 
@@ -27,7 +28,13 @@ class RecipeListWidget extends StatelessWidget {
         );
         return InkWell(
           onTap: () {
-              recipeClick(index);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RecipeDetailsRoute()),
+            );
+              //Below is the "chosen recipe" function. Should be used to indicate
+              // The user will eat this. It needs to go into the details view as well.
+              //recipeClick(index);
               },
           child:  CustomListItem(
               description:
