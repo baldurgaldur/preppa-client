@@ -56,7 +56,7 @@ class _RecipeDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(12.0, 0.0, 0.0, 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -64,18 +64,18 @@ class _RecipeDescription extends StatelessWidget {
             description,
             style: const TextStyle(
               fontWeight: FontWeight.w500,
-              fontSize: 14.0,
+              fontSize: 18.0,
             ),
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
           Text(
             cuisine,
-            style: const TextStyle(fontSize: 10.0),
+            style: const TextStyle(fontSize: 14.0),
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 1.0)),
           Text(
             '$cookingTimeMin minutes',
-            style: const TextStyle(fontSize: 10.0),
+            style: const TextStyle(fontSize: 14.0),
           ),
         ],
       ),
@@ -105,11 +105,11 @@ class CustomListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            flex: 2,
+            flex: 1,
             child: thumbnail,
           ),
           Expanded(
-            flex: 3,
+            flex: 4,
             child: _RecipeDescription(
               description: description,
               cuisine: cuisine,
